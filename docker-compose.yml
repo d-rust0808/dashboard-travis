@@ -1,0 +1,19 @@
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lpms-dashboard
+    ports:
+      - "20009:20009"
+    environment:
+      - NODE_ENV=production
+      - PORT=20009
+      - HOSTNAME=0.0.0.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:20009"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
